@@ -7,6 +7,7 @@ import {
   Minus,
   Plus,
   Shuffle,
+  Sparkles,
   Users,
 } from 'lucide-react';
 import { AppTab, Group, RemainderMode, Student } from '../types';
@@ -22,6 +23,7 @@ interface GroupingStageProps {
   groups: Group[];
   onSetGroups: (groups: Group[]) => void;
   onNavigate: (tab: AppTab) => void;
+  onLoadSimulationRoster: () => void;
 }
 
 interface TeamTheme {
@@ -181,6 +183,7 @@ export const GroupingStage: React.FC<GroupingStageProps> = ({
   groups,
   onSetGroups,
   onNavigate,
+  onLoadSimulationRoster,
 }) => {
   const [selectedForSwap, setSelectedForSwap] = useState<{
     groupId: string;
@@ -325,15 +328,25 @@ export const GroupingStage: React.FC<GroupingStageProps> = ({
           尚未建立學生名單
         </h2>
         <p className="text-sm text-slate-500 mt-2 max-w-md mx-auto">
-          請先前往「名單來源」上傳 CSV 或貼上學生姓名，即可進行課堂自動分組。
+          請先前往「名單來源」上傳 CSV 或貼上學生姓名，或直接載入模擬名單體驗自動分組功能。
         </p>
-        <button
-          type="button"
-          onClick={() => onNavigate('roster')}
-          className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors cursor-pointer"
-        >
-          前往匯入名單
-        </button>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={onLoadSimulationRoster}
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors cursor-pointer"
+          >
+            <Sparkles className="w-4 h-4" />
+            載入模擬名單 (24人)
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigate('roster')}
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer"
+          >
+            前往匯入名單
+          </button>
+        </div>
       </div>
     );
   }
@@ -355,14 +368,29 @@ export const GroupingStage: React.FC<GroupingStageProps> = ({
               </p>
             </div>
 
-            <button
-              type="button"
-              onClick={() => handleGenerateGroups()}
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              <Shuffle className="w-4 h-4" />
-              {groups.length > 0 ? '重新隨機分組' : '開始自動分組'}
-            </button>
+            <div className="flex flex-wrap items-center gap-2.5">
+              {groups.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    exportGroupsToCsv(groups);
+                    classroomAudio.playClick();
+                  }}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  下載 CSV 檔案
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => handleGenerateGroups()}
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              >
+                <Shuffle className="w-4 h-4" />
+                {groups.length > 0 ? '重新隨機分組' : '開始自動分組'}
+              </button>
+            </div>
           </div>
 
           {/* Swap Mode Helper Banner */}

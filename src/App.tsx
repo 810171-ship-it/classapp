@@ -7,6 +7,7 @@ import {
   buildBalancedGroups,
 } from './components/GroupingStage';
 import { AppTab, DrawRecord, Group, RemainderMode, Student } from './types';
+import { SAMPLE_STUDENT_NAMES } from './utils/csvParser';
 import { classroomAudio } from './utils/sound';
 
 const STORAGE_KEY = 'classroom_picker_grouper_v1';
@@ -192,6 +193,11 @@ export default function App() {
     classroomAudio.playClick();
   };
 
+  const handleLoadSimulationRoster = () => {
+    handleReplaceStudents(SAMPLE_STUDENT_NAMES);
+    classroomAudio.playClick();
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       {/* 3-Zone Single-Row Top Header */}
@@ -324,6 +330,7 @@ export default function App() {
             soundEnabled={soundEnabled}
             onToggleSound={handleToggleSound}
             onNavigate={handleNavigate}
+            onLoadSimulationRoster={handleLoadSimulationRoster}
           />
         )}
 
@@ -337,6 +344,7 @@ export default function App() {
             groups={groups}
             onSetGroups={setGroups}
             onNavigate={handleNavigate}
+            onLoadSimulationRoster={handleLoadSimulationRoster}
           />
         )}
       </main>

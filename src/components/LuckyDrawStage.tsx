@@ -24,6 +24,7 @@ interface LuckyDrawStageProps {
   soundEnabled: boolean;
   onToggleSound: () => void;
   onNavigate: (tab: AppTab) => void;
+  onLoadSimulationRoster: () => void;
 }
 
 interface ConfettiParticle {
@@ -58,6 +59,7 @@ export const LuckyDrawStage: React.FC<LuckyDrawStageProps> = ({
   soundEnabled,
   onToggleSound,
   onNavigate,
+  onLoadSimulationRoster,
 }) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [spotlightName, setSpotlightName] = useState<string | null>(null);
@@ -271,15 +273,25 @@ export const LuckyDrawStage: React.FC<LuckyDrawStageProps> = ({
           尚未建立學生名單
         </h2>
         <p className="text-sm text-slate-500 mt-2 max-w-md mx-auto">
-          請先前往「名單來源」上傳 CSV 或貼上學生姓名，即可開始使用隨機抽籤功能。
+          請先前往「名單來源」上傳 CSV 或貼上學生姓名，或直接載入模擬名單體驗抽籤功能。
         </p>
-        <button
-          type="button"
-          onClick={() => onNavigate('roster')}
-          className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors cursor-pointer"
-        >
-          前往匯入名單
-        </button>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={onLoadSimulationRoster}
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors cursor-pointer"
+          >
+            <Sparkles className="w-4 h-4" />
+            載入模擬名單 (24人)
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigate('roster')}
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer"
+          >
+            前往匯入名單
+          </button>
+        </div>
       </div>
     );
   }
