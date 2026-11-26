@@ -1,0 +1,6 @@
+{
+  "name": "課堂抽籤與分組助手",
+  "description": "專為老師設計的課堂互動工具：支援 CSV 上傳與名單貼上、含動畫與音效的隨機抽籤（可設定重複或不重複），以及視覺化自動分組。",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
